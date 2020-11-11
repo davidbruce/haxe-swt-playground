@@ -1,0 +1,7 @@
+-main kiwi.Main
+-lib haxe-swt
+-D windows
+-lib jasper
+--jvm output/Main.jar
+-cmd java.exe -XX:+CompactStrings --module-path "output/lib" --add-modules="org.eclipse.swt,org.eclipse.swtchart" -jar output/Main.jar
+
