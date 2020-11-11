@@ -5,21 +5,14 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import jasper.*;
 
-class GlobalSolver {  
-    public static final instance:Solver = new Solver();
-    private function new () {} 
-}
-
-class Rectangle
-{
+class Rectangle {
     public var x: Variable;
     public var y: Variable;
     public var width: Variable;
     public var height: Variable;
     public var control: Control;
 
-    public function new(control: Control): Void
-    {
+    public function new(control: Control): Void {
         this.control = control;
         x = new Variable();
         y = new Variable();
@@ -27,8 +20,7 @@ class Rectangle
         height = new Variable();
     }
 
-    public function render() : Void
-    {
+    public function render(): Void {
         trace(width);
         trace(height);
         this.control.setBounds(cast(x.m_value, Int),cast(y.m_value, Int), cast(width.m_value, Int), cast(height.m_value, Int));
@@ -77,26 +69,28 @@ class Main {
         solver.addConstraint(centerChild.height == (main.height/2));
 
         solver.updateVariables();
-        solver.addEditVariable(window.width, Strength.WEAK);
-        solver.addEditVariable(window.height, Strength.WEAK);
+        solver.addEditVariable(window.width, Strength.STRONG);
+        solver.addEditVariable(window.height, Strength.STRONG);
 
 
-        var render = () -> {
-            main.render();
-            rightChild.render();
-            leftChild.render();
-            centerChild.render();
-        }
+        var render =
+            () -> {
+                main.render();
+                rightChild.render();
+                leftChild.render();
+                centerChild.render();
+            }
 
         render();
         shell.addListener(SWT.Resize, new ListenerCallback( {
-            handleEvent: e -> {
-                var size = shell.getClientArea(); 
-                solver.suggestValue(window.width, size.width);
-                solver.suggestValue(window.height, size.height);
-                solver.updateVariables();
-                render();
-            }
+            handleEvent: 
+                e -> {
+                    var size = shell.getClientArea(); 
+                    solver.suggestValue(window.width, size.width);
+                    solver.suggestValue(window.height, size.height);
+                    solver.updateVariables();
+                    render();
+                }
         }));
 
         shell.setSize(200, 200);
