@@ -1,7 +1,11 @@
--main kiwi.Main
+-main skija.Main
 -lib haxe-swt
--D windows
+-lib haxe-skija
 -lib jasper
+#-D windows
+-D osx 
 --jvm output/Main.jar
--cmd java.exe -XX:+CompactStrings --module-path "output/lib" --add-modules="org.eclipse.swt,org.eclipse.swtchart" -jar output/Main.jar
+# --java output
+#-cmd java -XX:+CompactStrings --module-path "output/lib" -XstartOnFirstThread  -jar output/Main.jar
 
+-cmd java -XX:+CompactStrings --module-path "output/lib" -XstartOnFirstThread --add-modules="org.eclipse.swt,org.eclipse.swtchart,skija.shared" -jar output/Main.jar
