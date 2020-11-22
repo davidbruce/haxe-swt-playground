@@ -1,0 +1,9 @@
+-main skija.Main
+-lib haxe-swt
+-lib haxe-skija
+-lib jasper
+-D osx 
+--jvm output/linux/Main.jar
+# --java output/linux
+-cmd java -XstartOnFirstThread -XX:+CompactStrings --module-path "output/linux/lib" -jar output/linux/Main.jar
+
