@@ -1,0 +1,9 @@
+-main skija.Main
+-lib haxe-swt
+-lib haxe-skija
+-lib jasper
+-D linux
+--jvm output/linux/Main.jar
+# --java output/linux
+-cmd java -XX:+CompactStrings --module-path "output/linux/lib" -jar output/linux/Main.jar
+
