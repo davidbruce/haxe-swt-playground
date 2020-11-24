@@ -1,7 +1,5 @@
 package bgfx;
 
-import haxe.Int64;
-import org.eclipse.swt.events.PaintEvent;
 import java.io.ByteArrayInputStream;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
@@ -36,6 +34,9 @@ class Main {
         composite.setBackground(display.getSystemColor(SWT.COLOR_BLUE));
         composite.setLocation(0, 0);
 
+        var button = new Button(shell, SWT.PUSH);
+        button.setText("SWT Native Button!");
+
         if (!glfwInit())
             throw ("Unable to initialize GLFW");
 
@@ -51,9 +52,9 @@ class Main {
     
         // new LongRunningOperation(display, window, windowId, width, height).start();
         var stack = MemoryStack.stackPush();
-        var init = BGFXInit.mallocStack(stack);
+        var init = BGFXInit.callocStack(stack);
         bgfx_init_ctor(init);
-        var res = BGFXResolution.mallocStack(stack);
+        var res = BGFXResolution.callocStack(stack);
         res.width(width);
         res.height(height);
         res.reset(BGFX_RESET_VSYNC);
@@ -76,7 +77,12 @@ class Main {
 
         display.asyncExec(
             new SWTRunnable( () -> {
+                //Need to watch for shell disposal
                 while (!shell.isDisposed()) {
+                    //need to sleep along with the primary display
+                    //otherwise you can run into some nasty memory leaks and CPU spikes
+                    //with virtual desktops
+                    if (!display.readAndDispatch ()) display.sleep ();
                     glfwPollEvents();
                     // Set view 0 default viewport.
                     bgfx_set_view_rect(0, 0, 0, width, height);
@@ -101,9 +107,6 @@ class Main {
                     // process submitted rendering primitives.
                     bgfx_frame(false);
                 }
-                bgfx_shutdown();
-                glfwDestroyWindow(window);
-                glfwTerminate();
             })
         ); 
 
@@ -125,14 +128,16 @@ class Main {
 
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch ()) display.sleep ();
-           
         }
+        bgfx_shutdown();
+        glfwDestroyWindow(window);
+        glfwTerminate();
         display.dispose ();
     }
 }
 
 class SWTRunnable implements java.lang.Runnable {
-    var msg:String;
+    var msg: String;
     var callback: Void -> Void;
 	public function new(callback: Void -> Void):Void {
         this.callback = callback;

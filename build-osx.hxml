@@ -3,7 +3,7 @@
 -lib haxe-lwjgl
 -lib jasper
 -D osx 
---jvm output/linux/Main.jar
+--jvm output/osx/Main.jar
 # --java output/linux
--cmd java -XstartOnFirstThread -XX:+CompactStrings --module-path "output/linux/lib" -jar output/linux/Main.jar
+-cmd java -XstartOnFirstThread -XX:+CompactStrings --module-path "output/osx/lib" -jar output/osx/Main.jar
 
