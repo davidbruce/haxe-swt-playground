@@ -1,6 +1,6 @@
--main skija.Main
+-main bgfx.Main
 -lib haxe-swt
--lib haxe-skija
+-lib haxe-lwjgl
 -lib jasper
 -D osx 
 --jvm output/linux/Main.jar
