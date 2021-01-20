@@ -1,10 +1,10 @@
 package kiwi;
 
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import jasper.*;
 import swt.callbacks.ListenerCallback;
+import kiwi.components.*;
 
 /*
 #Component
@@ -47,52 +47,7 @@ app = new Window({
 */
 
 
-class Component { 
-    public var control: Control;
-    public var x: Variable;
-    public var y: Variable;
-    public var width: Variable;
-    public var height: Variable;
-    public var padding: Rectangle;
-    public var margin: Rectangle;
-    public var zindex: Int;
 
-    public function new(control: Control): Void {
-        this.control = control;
-        x = new Variable();
-        y = new Variable();
-        width = new Variable();
-        height = new Variable();
-        padding = new Rectangle(0, 0, 0, 0);
-        margin = new Rectangle(0, 0, 0, 0);
-        zindex = 0;
-    }
-
-    public function draw(): Void {
-        this.control.setBounds(cast(x.m_value, Int),cast(y.m_value, Int), cast(width.m_value, Int), cast(height.m_value, Int));
-        this.control.moveAbove(null);
-    }
-}
-
-class Container extends Component {
-    public var solver(default, null) = new Solver();
-    public var children(default, null) = new Array<Component>(); 
-    public function new(control: Control) {
-        super(control);
-    }
-
-    override public function draw(): Void {
-        super.draw();
-        for (component in children) {
-            component.draw();
-        }
-    }
-
-    public function add(component: Component) {
-        children.push(component);
-        // children.sort((a, b) -> a.zindex - b.zindex);
-    }
-}
 
 class Main {
     public static function main() {

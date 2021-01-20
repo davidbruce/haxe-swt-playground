@@ -1,6 +1,5 @@
 -main kiwi.Main
 -lib haxe-swt
--lib haxe-lwjgl
 -lib jasper
 -D osx 
 --jvm output/osx/Main.jar
